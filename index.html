@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>迷い棚</title>
+<title>TSUNDOKO</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -17,6 +17,7 @@
   --accent: #181818;
   --done-bg: #f0f7f2;
   --done-accent: #3a7d52;
+  --red: #d0392b;
   --fab: #181818;
 }
 
@@ -29,7 +30,6 @@ html, body {
   font-weight: 300;
 }
 
-/* ── PAGE SHELL ── */
 .app {
   max-width: 430px;
   margin: 0 auto;
@@ -48,15 +48,14 @@ html, body {
   overflow: hidden;
   animation: fadeUp .22s ease;
 }
-
 .page.active { display: flex; }
 
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(12px); }
+  from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── NAV BAR ── */
+/* ── NAVBAR ── */
 .navbar {
   height: 52px;
   display: flex;
@@ -65,7 +64,7 @@ html, body {
   background: var(--surface);
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
-  position: relative;
+  gap: 8px;
 }
 
 .navbar .back {
@@ -74,10 +73,8 @@ html, body {
   color: var(--muted);
   line-height: 1;
   padding: 6px 6px 6px 0;
-  margin-right: 8px;
 }
-
-.navbar .back:hover { color: var(--ink); }
+.navbar .back:active { color: var(--ink); }
 
 .navbar h1 {
   font-size: 15px;
@@ -92,22 +89,22 @@ html, body {
   cursor: pointer;
   letter-spacing: 0.03em;
   padding: 6px 0 6px 12px;
+  white-space: nowrap;
 }
-
-.navbar .nav-action:hover { color: var(--ink); }
+.navbar .nav-action:active { color: var(--ink); }
+.navbar .nav-action.red { color: var(--red); }
 
 /* ── TOP PAGE ── */
 #page-top {
   justify-content: center;
   align-items: center;
   background: var(--surface);
-  gap: 0;
 }
 
 .top-title {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 500;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.14em;
   margin-bottom: 48px;
   text-align: center;
 }
@@ -135,18 +132,9 @@ html, body {
   text-align: center;
   transition: all .15s;
 }
-
-.top-btn:hover, .top-btn:active { background: var(--ink); color: white; border-color: var(--ink); }
-
-.top-btn.primary {
-  background: var(--ink);
-  color: white;
-  border-color: var(--ink);
-}
-
-.top-btn.primary:hover { opacity: .8; }
-
-
+.top-btn:active { background: var(--ink); color: white; border-color: var(--ink); }
+.top-btn.primary { background: var(--ink); color: white; border-color: var(--ink); }
+.top-btn.primary:active { opacity: .7; }
 
 /* ── ADD PAGE ── */
 #page-add .scroll-area {
@@ -156,9 +144,7 @@ html, body {
   -webkit-overflow-scrolling: touch;
 }
 
-.field {
-  margin-bottom: 20px;
-}
+.field { margin-bottom: 20px; }
 
 .field label {
   display: block;
@@ -184,16 +170,8 @@ html, body {
   transition: border-color .15s;
   -webkit-appearance: none;
 }
-
-.field input:focus, .field textarea:focus {
-  border-color: var(--ink);
-}
-
-.field textarea {
-  resize: vertical;
-  min-height: 100px;
-  line-height: 1.6;
-}
+.field input:focus, .field textarea:focus { border-color: var(--ink); }
+.field textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
 
 .add-footer {
   padding: 16px 20px;
@@ -216,7 +194,6 @@ html, body {
   letter-spacing: 0.06em;
   transition: opacity .15s;
 }
-
 .btn-submit:active { opacity: .7; }
 
 /* ── LIST PAGE ── */
@@ -227,6 +204,48 @@ html, body {
   padding-bottom: 88px;
 }
 
+/* Select mode bar */
+.select-bar {
+  display: none;
+  align-items: center;
+  padding: 8px 20px;
+  background: #fff8f8;
+  border-bottom: 1px solid #f0d8d8;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.select-bar.show { display: flex; }
+
+.select-bar span {
+  flex: 1;
+  font-size: 12px;
+  color: var(--red);
+}
+
+.btn-select-del {
+  padding: 6px 14px;
+  background: var(--red);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+}
+.btn-select-del:disabled { opacity: .4; cursor: default; }
+
+.btn-select-cancel {
+  padding: 6px 12px;
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* Book item */
 .book-item {
   display: flex;
   align-items: center;
@@ -237,8 +256,27 @@ html, body {
   transition: background .1s;
   gap: 14px;
 }
-
 .book-item:active { background: var(--bg); }
+.book-item.selected { background: #fff0f0; }
+
+.book-item-check {
+  display: none;
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid var(--border);
+  border-radius: 50%;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: white;
+  transition: all .15s;
+}
+.select-mode .book-item-check { display: flex; }
+.book-item.selected .book-item-check {
+  background: var(--red);
+  border-color: var(--red);
+}
 
 .book-item-body { flex: 1; min-width: 0; }
 
@@ -270,6 +308,7 @@ html, body {
   color: var(--border);
   flex-shrink: 0;
 }
+.select-mode .book-item-arrow { display: none; }
 
 .empty-state {
   padding: 64px 20px;
@@ -278,20 +317,13 @@ html, body {
   font-size: 13px;
   line-height: 2;
 }
-
-.empty-icon {
-  font-size: 36px;
-  display: block;
-  margin-bottom: 12px;
-  opacity: .35;
-}
+.empty-icon { font-size: 36px; display: block; margin-bottom: 12px; opacity: .35; }
 
 /* ── FAB ── */
 .fab {
   position: absolute;
-  bottom: 28px;
-  right: 24px;
   bottom: calc(28px + env(safe-area-inset-bottom));
+  right: 24px;
   width: 52px;
   height: 52px;
   background: var(--fab);
@@ -299,116 +331,118 @@ html, body {
   border: none;
   border-radius: 50%;
   font-size: 24px;
-  line-height: 1;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 16px rgba(0,0,0,.18);
-  transition: transform .15s, box-shadow .15s;
+  transition: transform .15s;
   z-index: 10;
 }
+.fab:active { transform: scale(.93); }
 
-.fab:active { transform: scale(.93); box-shadow: 0 2px 8px rgba(0,0,0,.18); }
-
-/* ── OVERLAY ── */
+/* ── MODAL OVERLAY (center) ── */
 .overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,.4);
+  background: rgba(0,0,0,.45);
   z-index: 40;
   display: none;
-  align-items: flex-end;
-  animation: overlayIn .2s ease;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: overlayIn .18s ease;
 }
-
 @keyframes overlayIn {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
-
 .overlay.show { display: flex; }
 
-.overlay-sheet {
+.modal-card {
   width: 100%;
+  max-width: 380px;
   background: var(--surface);
-  border-radius: 16px 16px 0 0;
-  padding: 0 0 calc(32px + env(safe-area-inset-bottom));
-  animation: sheetUp .22s ease;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,.2);
+  animation: modalIn .2s ease;
   max-height: 80vh;
   display: flex;
   flex-direction: column;
 }
-
-@keyframes sheetUp {
-  from { transform: translateY(100%); }
-  to   { transform: translateY(0); }
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(.94); }
+  to   { opacity: 1; transform: scale(1); }
 }
 
-.sheet-handle {
-  width: 36px;
-  height: 4px;
-  background: var(--border);
-  border-radius: 2px;
-  margin: 12px auto 20px;
+.modal-header {
+  padding: 20px 20px 0;
   flex-shrink: 0;
 }
 
-.sheet-body {
-  padding: 0 24px;
+.modal-title {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4;
+  margin-bottom: 3px;
+}
+.modal-author {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 2px;
+}
+.modal-price {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.modal-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.modal-body {
+  padding: 16px 20px;
   overflow-y: auto;
   flex: 1;
 }
 
-.sheet-title {
-  font-size: 17px;
-  font-weight: 500;
-  margin-bottom: 4px;
-  line-height: 1.4;
-}
-
-.sheet-author {
-  font-size: 13px;
+/* View mode */
+.memo-label {
+  font-size: 10px;
   color: var(--muted);
-  margin-bottom: 6px;
-}
-
-.sheet-price {
-  font-size: 13px;
-  color: var(--muted);
-  margin-bottom: 20px;
-}
-
-.sheet-memo-label {
-  font-size: 11px;
-  color: var(--muted);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   margin-bottom: 8px;
 }
 
-.sheet-memo {
+.memo-text {
   font-size: 14px;
   line-height: 1.7;
   color: var(--ink);
   white-space: pre-wrap;
-  margin-bottom: 28px;
   min-height: 40px;
 }
+.memo-text.empty { color: var(--muted); font-style: italic; }
 
-.sheet-memo.empty { color: var(--muted); font-style: italic; }
 
-.sheet-actions {
+
+.modal-footer {
+  padding: 12px 20px;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--border);
   display: flex;
   gap: 10px;
-  padding: 0 24px;
   flex-shrink: 0;
-  margin-top: 4px;
 }
 
-.btn-done {
+.btn-modal-done {
   flex: 1;
-  padding: 13px;
+  padding: 12px;
   background: var(--done-accent);
   color: white;
   border: none;
@@ -417,14 +451,26 @@ html, body {
   font-size: 13px;
   font-weight: 400;
   cursor: pointer;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   transition: opacity .15s;
 }
+.btn-modal-done:active { opacity: .7; }
 
-.btn-done:active { opacity: .7; }
+.btn-modal-delete {
+  padding: 12px 14px;
+  background: transparent;
+  color: var(--red);
+  border: 1px solid #f0c8c4;
+  border-radius: 6px;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.btn-modal-delete:active { background: #fff0ef; }
 
-.btn-close-sheet {
-  padding: 13px 18px;
+.btn-modal-close {
+  padding: 12px 14px;
   background: transparent;
   color: var(--muted);
   border: 1px solid var(--border);
@@ -432,14 +478,12 @@ html, body {
   font-family: 'Noto Sans JP', sans-serif;
   font-size: 13px;
   cursor: pointer;
-  transition: all .15s;
 }
-
-.btn-close-sheet:active { background: var(--bg); }
+.btn-modal-close:active { background: var(--bg); }
 
 /* ── DONE PAGE ── */
-#page-done .book-item { background: var(--done-bg); }
-#page-done .book-item:active { background: #e4f2e8; }
+#page-done .book-item { background: var(--done-bg); cursor: default; }
+#page-done .book-item:active { background: var(--done-bg); }
 
 .done-badge {
   font-size: 10px;
@@ -454,13 +498,12 @@ html, body {
 /* Sort toggle */
 .sort-bar {
   display: flex;
-  gap: 0;
   padding: 10px 20px;
   background: var(--bg);
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
+  gap: 0;
 }
-
 .sort-btn {
   padding: 5px 14px;
   font-size: 11px;
@@ -472,7 +515,6 @@ html, body {
   letter-spacing: 0.03em;
   transition: all .15s;
 }
-
 .sort-btn:first-child { border-radius: 4px 0 0 4px; }
 .sort-btn:last-child  { border-radius: 0 4px 4px 0; border-left: none; }
 .sort-btn.active { background: var(--ink); color: white; border-color: var(--ink); }
@@ -481,87 +523,87 @@ html, body {
 <body>
 <div class="app">
 
-  <!-- ══ TOP PAGE ══ -->
+  <!-- ══ TOP ══ -->
   <div class="page active" id="page-top">
-    <div class="top-title">迷い棚</div>
+    <div class="top-title">TSUNDOKO</div>
     <div class="top-menu">
-      <button class="top-btn primary" onclick="go('list', 'top')">一覧</button>
-      <button class="top-btn" onclick="go('add', 'top')">追加</button>
-      <button class="top-btn" onclick="go('done', 'top')" style="font-size:13px;">購入済み</button>
+      <button class="top-btn primary" onclick="go('list','top')">一覧</button>
+      <button class="top-btn" onclick="go('add','top')">追加</button>
+      <button class="top-btn" onclick="go('done','top')">購入済み</button>
     </div>
   </div>
 
-  <!-- ══ ADD PAGE ══ -->
+  <!-- ══ ADD ══ -->
   <div class="page" id="page-add">
     <div class="navbar">
       <span class="back" onclick="goBack()">‹</span>
       <h1>追加</h1>
     </div>
     <div class="scroll-area">
-      <div class="field">
-        <label>タイトル</label>
-        <input type="text" id="f-title" placeholder="本のタイトル">
-      </div>
-      <div class="field">
-        <label>著者</label>
-        <input type="text" id="f-author" placeholder="著者名">
-      </div>
-      <div class="field">
-        <label>価格（円）</label>
-        <input type="number" id="f-price" placeholder="1650">
-      </div>
-      <div class="field">
-        <label>メモ</label>
-        <textarea id="f-memo" placeholder="気になった理由、どこで知ったか…"></textarea>
-      </div>
+      <div class="field"><label>タイトル</label><input type="text" id="f-title" placeholder="本のタイトル"></div>
+      <div class="field"><label>著者</label><input type="text" id="f-author" placeholder="著者名"></div>
+      <div class="field"><label>価格（円）</label><input type="number" id="f-price" placeholder="1650"></div>
+      <div class="field"><label>メモ</label><textarea id="f-memo" placeholder="気になった理由、どこで知ったか…"></textarea></div>
     </div>
     <div class="add-footer">
       <button class="btn-submit" onclick="addBook()">追加する</button>
     </div>
   </div>
 
-  <!-- ══ LIST PAGE ══ -->
+  <!-- ══ LIST ══ -->
   <div class="page" id="page-list">
-    <div class="navbar">
+    <div class="navbar" id="list-navbar">
       <span class="back" onclick="goBack()">‹</span>
       <h1>一覧</h1>
-      <span class="nav-action" onclick="go('done', 'list')">購入済み</span>
+      <span class="nav-action" onclick="go('done','list')">購入済み</span>
+      <span class="nav-action" onclick="enterSelectMode()">選択</span>
     </div>
+
+    <!-- Select mode bar -->
+    <div class="select-bar" id="select-bar">
+      <span id="select-count-label">0件を選択中</span>
+      <button class="btn-select-cancel" onclick="exitSelectMode()">キャンセル</button>
+      <button class="btn-select-del" id="btn-bulk-del" onclick="bulkDelete()" disabled>削除</button>
+    </div>
+
     <div class="sort-bar">
-      <button class="sort-btn active" id="sort-new" onclick="setSort('new',this)">新しい順</button>
-      <button class="sort-btn" id="sort-az" onclick="setSort('az',this)">五十音順</button>
+      <button class="sort-btn active" onclick="setSort('new',this)">新しい順</button>
+      <button class="sort-btn" onclick="setSort('az',this)">五十音順</button>
     </div>
-    <div class="scroll-area" id="list-scroll">
+    <div class="scroll-area">
       <div id="book-list"></div>
     </div>
-    <button class="fab" onclick="go('add', 'list')">＋</button>
+    <button class="fab" id="list-fab" onclick="go('add','list')">＋</button>
   </div>
 
-  <!-- ══ DONE PAGE ══ -->
+  <!-- ══ DONE ══ -->
   <div class="page" id="page-done">
     <div class="navbar">
       <span class="back" onclick="goBack()">‹</span>
       <h1>購入済み</h1>
     </div>
-    <div class="scroll-area" id="done-scroll">
+    <div class="scroll-area">
       <div id="done-list"></div>
     </div>
   </div>
 
-  <!-- ══ MEMO OVERLAY ══ -->
-  <div class="overlay" id="overlay" onclick="closeOverlay(event)">
-    <div class="overlay-sheet">
-      <div class="sheet-handle"></div>
-      <div class="sheet-body">
-        <div class="sheet-title" id="ov-title"></div>
-        <div class="sheet-author" id="ov-author"></div>
-        <div class="sheet-price" id="ov-price"></div>
-        <div class="sheet-memo-label">メモ</div>
-        <div class="sheet-memo" id="ov-memo"></div>
+  <!-- ══ MODAL (center) ══ -->
+  <div class="overlay" id="overlay" onclick="overlayClick(event)">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title" id="ov-title"></div>
+        <div class="modal-author" id="ov-author"></div>
+        <div class="modal-price" id="ov-price"></div>
       </div>
-      <div class="sheet-actions">
-        <button class="btn-done" onclick="markDone()">✓ 購入した</button>
-        <button class="btn-close-sheet" onclick="closeOverlay()">閉じる</button>
+      <div class="modal-divider"></div>
+      <div class="modal-body">
+        <div class="memo-label">メモ</div>
+        <div class="memo-text" id="ov-memo"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-modal-done" onclick="markDone()">✓ 購入した</button>
+        <button class="btn-modal-delete" onclick="deleteFromModal()">削除</button>
+        <button class="btn-modal-close" onclick="closeOverlay()">閉じる</button>
       </div>
     </div>
   </div>
@@ -572,33 +614,34 @@ html, body {
   let books = [];
   let sortMode = 'new';
   let activeBookId = null;
-  let history = [];
+  let pageHistory = [];
+  let selectMode = false;
+  let selectedIds = new Set();
 
   // ── Storage ──
   function load() {
-    try { books = JSON.parse(localStorage.getItem('readingmemo_v1') || '[]'); } catch { books = []; }
+    try { books = JSON.parse(localStorage.getItem('tsundoko_v1') || '[]'); } catch { books = []; }
   }
-  function save() { localStorage.setItem('readingmemo_v1', JSON.stringify(books)); }
+  function save() { localStorage.setItem('tsundoko_v1', JSON.stringify(books)); }
   function uid()  { return Date.now().toString(36) + Math.random().toString(36).slice(2,5); }
 
   // ── Navigation ──
   function go(page, from) {
-    if (from) history.push(from);
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById('page-' + page).classList.add('active');
-    if (page === 'list') renderList();
-    if (page === 'done') renderDone();
-    const sa = document.getElementById('page-' + page)?.querySelector('.scroll-area');
-    if (sa) sa.scrollTop = 0;
+    if (from) pageHistory.push(from);
+    showPage(page);
   }
 
   function goBack() {
-    const prev = history.pop() || 'top';
+    const prev = pageHistory.pop() || 'top';
+    showPage(prev);
+  }
+
+  function showPage(page) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById('page-' + prev).classList.add('active');
-    if (prev === 'list') renderList();
-    if (prev === 'done') renderDone();
-    const sa = document.getElementById('page-' + prev)?.querySelector('.scroll-area');
+    document.getElementById('page-' + page).classList.add('active');
+    if (page === 'list') { exitSelectMode(); renderList(); }
+    if (page === 'done') renderDone();
+    const sa = document.getElementById('page-' + page)?.querySelector('.scroll-area');
     if (sa) sa.scrollTop = 0;
   }
 
@@ -612,16 +655,16 @@ html, body {
       author: document.getElementById('f-author').value.trim(),
       price:  document.getElementById('f-price').value.trim(),
       memo:   document.getElementById('f-memo').value.trim(),
-      done:   false,
+      done: false,
       addedAt: Date.now(),
     });
     save();
     ['f-title','f-author','f-price','f-memo'].forEach(id => document.getElementById(id).value = '');
-    history = []; // reset history after add
+    pageHistory = [];
     go('list');
   }
 
-  // ── Render List ──
+  // ── Sort ──
   function setSort(mode, el) {
     sortMode = mode;
     document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
@@ -629,26 +672,80 @@ html, body {
     renderList();
   }
 
+  // ── Select Mode ──
+  function enterSelectMode() {
+    selectMode = true;
+    selectedIds.clear();
+    document.getElementById('select-bar').classList.add('show');
+    document.getElementById('list-fab').style.display = 'none';
+    document.getElementById('book-list').classList.add('select-mode');
+    updateSelectBar();
+    renderList();
+  }
+
+  function exitSelectMode() {
+    selectMode = false;
+    selectedIds.clear();
+    document.getElementById('select-bar').classList.remove('show');
+    document.getElementById('list-fab').style.display = '';
+    document.getElementById('book-list').classList.remove('select-mode');
+    renderList();
+  }
+
+  function toggleSelect(id) {
+    if (selectedIds.has(id)) selectedIds.delete(id);
+    else selectedIds.add(id);
+    updateSelectBar();
+    // update item UI
+    document.querySelectorAll('.book-item').forEach(el => {
+      if (el.dataset.id === id) {
+        el.classList.toggle('selected', selectedIds.has(id));
+        const check = el.querySelector('.book-item-check');
+        if (check) check.textContent = selectedIds.has(id) ? '✓' : '';
+      }
+    });
+  }
+
+  function updateSelectBar() {
+    const n = selectedIds.size;
+    document.getElementById('select-count-label').textContent = `${n}件を選択中`;
+    document.getElementById('btn-bulk-del').disabled = n === 0;
+  }
+
+  function bulkDelete() {
+    if (!selectedIds.size) return;
+    books = books.filter(b => !selectedIds.has(b.id));
+    save();
+    exitSelectMode();
+  }
+
+  // ── Render List ──
   function renderList() {
     let items = books.filter(b => !b.done);
-    if (sortMode === 'az') {
-      items = [...items].sort((a,b) => a.title.localeCompare(b.title, 'ja'));
-    }
-    const el = document.getElementById('book-list');
+    if (sortMode === 'az') items = [...items].sort((a,b) => a.title.localeCompare(b.title,'ja'));
+
+    const wrap = document.getElementById('book-list');
+    if (selectMode) wrap.classList.add('select-mode');
+
     if (!items.length) {
-      el.innerHTML = `<div class="empty-state"><span class="empty-icon">📖</span>本がありません<br>「＋」から追加してみましょう</div>`;
+      wrap.innerHTML = `<div class="empty-state"><span class="empty-icon">📖</span>本がありません<br>「＋」から追加してみましょう</div>`;
       return;
     }
-    el.innerHTML = items.map(b => `
-      <div class="book-item" onclick="openOverlay('${b.id}')">
-        <div class="book-item-body">
-          <div class="book-item-title">${esc(b.title)}</div>
-          <div class="book-item-author">${b.author ? esc(b.author) : '著者不明'}</div>
-        </div>
-        ${b.price ? `<div class="book-item-price">¥${Number(b.price).toLocaleString()}</div>` : ''}
-        <div class="book-item-arrow">›</div>
-      </div>
-    `).join('');
+
+    wrap.innerHTML = items.map(b => {
+      const sel = selectedIds.has(b.id);
+      return `
+        <div class="book-item ${sel ? 'selected' : ''}" data-id="${b.id}"
+          onclick="${selectMode ? `toggleSelect('${b.id}')` : `openOverlay('${b.id}')`}">
+          <div class="book-item-check">${sel ? '✓' : ''}</div>
+          <div class="book-item-body">
+            <div class="book-item-title">${esc(b.title)}</div>
+            <div class="book-item-author">${b.author ? esc(b.author) : '著者不明'}</div>
+          </div>
+          ${b.price ? `<div class="book-item-price">¥${Number(b.price).toLocaleString()}</div>` : ''}
+          <div class="book-item-arrow">›</div>
+        </div>`;
+    }).join('');
   }
 
   // ── Render Done ──
@@ -670,7 +767,7 @@ html, body {
     `).join('');
   }
 
-  // ── Overlay ──
+  // ── Modal ──
   function openOverlay(id) {
     const b = books.find(b => b.id === id);
     if (!b) return;
@@ -689,19 +786,30 @@ html, body {
     document.getElementById('overlay').classList.add('show');
   }
 
-  function closeOverlay(e) {
-    if (e && e.target !== document.getElementById('overlay')) return;
+  function closeOverlay() {
     document.getElementById('overlay').classList.remove('show');
     activeBookId = null;
   }
 
+  function overlayClick(e) {
+    if (e.target === document.getElementById('overlay')) closeOverlay();
+  }
+
+
+  // ── Actions ──
   function markDone() {
     const b = books.find(b => b.id === activeBookId);
     if (!b) return;
     b.done = true;
     save();
-    document.getElementById('overlay').classList.remove('show');
-    activeBookId = null;
+    closeOverlay();
+    renderList();
+  }
+
+  function deleteFromModal() {
+    books = books.filter(b => b.id !== activeBookId);
+    save();
+    closeOverlay();
     renderList();
   }
 
@@ -709,7 +817,6 @@ html, body {
     return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
 
-  // ── Init ──
   load();
 </script>
 </body>
